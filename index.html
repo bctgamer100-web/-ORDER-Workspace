@@ -1,9 +1,13 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>คู่มือ ORDER Workspace</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>คู่มือ RAYQUAZA 2 โหมด</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
 <style>
-/* Layout: header → swimlane flowchart (SVG on desktop, vertical step list on phones) → side drawer with how-to for the clicked box → three reference cards */
+/* โครง: หัวคู่มือ → แผนผังงานประจำวัน (SVG บนจอกว้าง / รายการขั้นตอนบนมือถือ) → แถบขวา RZ Plan → งานอัตโนมัติ / แก้ปัญหา / ทางลัด
+   กดกล่องไหนก็ได้ = เปิดแผงวิธีใช้ด้านขวา (มือถือ = แผงล่าง) */
 :root{
   --bg:#f3f5f8; --surface:#ffffff; --surface-2:#eef1f6; --ink:#16202f; --muted:#5b6678; --line:#d5dbe5;
   --main:#0f8a6a; --main-soft:#e1f4ee;
@@ -11,50 +15,64 @@
   --src:#64748b; --src-soft:#eef1f5;
   --floor:#c66a12; --floor-soft:#fdf0e1;
   --log:#7a4fd0; --log-soft:#f0eafc;
+  --plan:#b8336a; --plan-soft:#fbe9f0;
   --ok:#1f8a4c; --warn:#b86a00; --bad:#c23a2e;
   --shadow:0 18px 48px rgba(22,32,47,.18); --on-accent:#ffffff;
   --f-display:"Anuphan","IBM Plex Sans Thai",system-ui,sans-serif;
   --f-body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
+  color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#0f141c; --surface:#171e2a; --surface-2:#1e2735; --ink:#e7ecf3; --muted:#9ba7b8; --line:#2c3748;
   --main:#3cc79c; --main-soft:#123328; --web:#6ea3f0; --web-soft:#15253d; --src:#94a3b8; --src-soft:#1f2836;
-  --floor:#f0a050; --floor-soft:#35240f; --log:#a98bf0; --log-soft:#251c3a;
+  --floor:#f0a050; --floor-soft:#35240f; --log:#a98bf0; --log-soft:#251c3a; --plan:#f07aa8; --plan-soft:#3a1626;
   --ok:#5cc98a; --warn:#f0a845; --bad:#f07a6e; --shadow:0 18px 48px rgba(0,0,0,.5); --on-accent:#0f141c; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0f141c; --surface:#171e2a; --surface-2:#1e2735; --ink:#e7ecf3; --muted:#9ba7b8; --line:#2c3748;
   --main:#3cc79c; --main-soft:#123328; --web:#6ea3f0; --web-soft:#15253d; --src:#94a3b8; --src-soft:#1f2836;
-  --floor:#f0a050; --floor-soft:#35240f; --log:#a98bf0; --log-soft:#251c3a;
+  --floor:#f0a050; --floor-soft:#35240f; --log:#a98bf0; --log-soft:#251c3a; --plan:#f07aa8; --plan-soft:#3a1626;
   --ok:#5cc98a; --warn:#f0a845; --bad:#f07a6e; --shadow:0 18px 48px rgba(0,0,0,.5); --on-accent:#0f141c; color-scheme:dark}
 
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+html{scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .wrap{max-width:1180px;margin:0 auto;padding-block:32px 56px;display:flex;flex-direction:column;gap:28px}
 h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.3;text-wrap:balance}
 p{margin:0}
 button{font:inherit;color:inherit}
+b{font-weight:600}
 
-/* header */
-header{display:flex;flex-direction:column;gap:10px}
+/* หัว */
+header{display:flex;flex-direction:column;gap:12px}
 .eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.08em;color:var(--main)}
 header h1{font-size:clamp(28px,4.4vw,40px);font-weight:700}
-header p{color:var(--muted);max-width:64ch}
+header p{color:var(--muted);max-width:70ch}
 .meta-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 12px;font-size:13.5px;border:1px solid var(--line);background:var(--surface)}
-.pill.hint{background:var(--main-soft);border-color:var(--main);color:var(--ink);font-weight:500}
-.pill a{color:var(--web);text-decoration:none;word-break:break-all}
-.pill a:hover{text-decoration:underline}
+.pill.hint{background:var(--main-soft);border-color:var(--main);font-weight:500}
+.theme-btn{cursor:pointer}
+.theme-btn:hover{border-color:var(--ink)}
 
-/* board */
+/* โหมด 2 แบบ */
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.mode{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.mode h2{font-size:17px;display:flex;align-items:center;gap:8px}
+.mode p{color:var(--muted);font-size:14px}
+.tag{font-size:12px;font-weight:600;border-radius:999px;padding:1px 9px;border:1px solid var(--main);color:var(--main);background:var(--main-soft)}
+@media (max-width:760px){.modes{grid-template-columns:1fr}}
+
+/* กระดาน */
 .board{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.board-head{display:flex;flex-direction:column;gap:4px}
+.board-head h2{font-size:20px}
+.board-head p{color:var(--muted);font-size:14px}
 .legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted)}
 .legend span{display:inline-flex;align-items:center;gap:8px}
 .sw{width:14px;height:14px;border-radius:4px;border:2px solid;flex:none}
 .ln{width:26px;height:0;border-top:3px solid;flex:none}
 .ln.dash{border-top-style:dashed}
 
-/* desktop svg flow */
 .flow-svg{display:block}
 .flow-svg svg{width:100%;height:auto;display:block}
 .lane-band{fill:var(--surface-2);stroke:var(--line);stroke-width:1}
@@ -86,13 +104,12 @@ header p{color:var(--muted);max-width:64ch}
 .node .tap{font-size:11px;fill:var(--muted);opacity:0;transition:opacity .12s}
 .node:hover .tap,.node:focus-visible .tap{opacity:1}
 
-/* phone list flow */
-.flow-list{display:none;list-style:none;margin:0;padding:0;flex-direction:column;gap:0}
+.flow-list{display:none;list-style:none;margin:0;padding:0;flex-direction:column}
 .flow-list li{display:flex;flex-direction:column;align-items:stretch}
 .flow-list .phase{font-family:var(--f-display);font-weight:600;font-size:13px;color:var(--muted);letter-spacing:.04em;padding:14px 0 8px}
 .flow-list li:first-child .phase{padding-top:0}
 .step-btn{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;width:100%;border:2px solid;border-radius:12px;padding:12px;background:var(--surface);cursor:pointer}
-.step-btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.step-btn:focus-visible,.tile:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .step-btn .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:14px;color:var(--on-accent)}
 .step-btn b{display:block;font-family:var(--f-display);font-size:16px}
 .step-btn small{display:block;color:var(--muted);font-size:13px;line-height:1.45}
@@ -105,25 +122,48 @@ header p{color:var(--muted);max-width:64ch}
 .flow-list .conn{height:18px;width:3px;background:var(--main);margin-left:27px}
 @media (max-width:760px){.flow-svg{display:none}.flow-list{display:flex}.board{padding:14px}}
 
-/* cards */
+/* แถบขวา RZ Plan */
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.tile{display:flex;flex-direction:column;gap:6px;text-align:left;border:2px solid var(--plan);background:var(--plan-soft);border-radius:12px;padding:14px;cursor:pointer;min-width:0}
+.tile:hover{box-shadow:0 0 0 1px var(--plan) inset}
+.tile .ti{font-size:22px;line-height:1}
+.tile b{font-family:var(--f-display);font-size:15.5px}
+.tile small{color:var(--muted);font-size:13px;line-height:1.45}
+.tile.new{position:relative}
+.tile.new::after{content:"ใหม่";position:absolute;top:10px;right:10px;font-size:11px;font-weight:700;color:var(--on-accent);background:var(--plan);border-radius:999px;padding:1px 8px}
+@media (max-width:1000px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.tiles{grid-template-columns:1fr}}
+
+/* การ์ด */
 .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .card h2{font-size:17px}
-.card ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:14px}
-.card li.row{display:grid;grid-template-columns:5.4em minmax(0,1fr);gap:8px}
+.card ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px;font-size:14px}
+.card li.row{display:grid;grid-template-columns:5.6em minmax(0,1fr);gap:8px}
+.card li.time{display:grid;grid-template-columns:6.6em minmax(0,1fr);gap:8px}
+.card li.time .when{font-weight:600;color:var(--log)}
 .st{font-weight:700;white-space:nowrap}
 .st.ok{color:var(--ok)} .st.warn{color:var(--warn)} .st.bad{color:var(--bad)}
 .card li.dot{padding-left:16px;position:relative}
 .card li.dot::before{content:"";position:absolute;left:2px;top:.65em;width:6px;height:6px;border-radius:50%;background:var(--main)}
-@media (max-width:900px){.cards{grid-template-columns:1fr}}
+.card.wide{grid-column:1 / -1}
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px}
+.faq details{border-bottom:1px solid var(--line);padding:8px 0}
+.faq summary{cursor:pointer;font-weight:600;list-style:none;display:flex;gap:8px;align-items:flex-start}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"+";flex:none;width:20px;height:20px;border-radius:6px;background:var(--surface-2);display:grid;place-items:center;font-weight:700;color:var(--main);margin-top:2px}
+.faq details[open] summary::before{content:"−"}
+.faq details p{color:var(--muted);font-size:14px;padding:6px 0 4px 28px}
+kbd{font-family:var(--f-body);font-size:12.5px;font-weight:600;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:0 6px;background:var(--surface-2)}
+@media (max-width:900px){.cards{grid-template-columns:1fr}.faq{grid-template-columns:1fr}}
 
 footer{color:var(--muted);font-size:13px}
 
-/* drawer */
+/* แผงวิธีใช้ */
 .scrim{position:fixed;inset:0;background:rgba(10,14,20,.38);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
 .drawer{position:fixed;z-index:50;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));
-  width:min(440px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+  width:min(460px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
   display:flex;flex-direction:column;overflow:hidden;transform:translateX(calc(100% + 32px));visibility:hidden;transition:transform .24s ease,visibility 0s linear .24s}
 .drawer.open{transform:none;visibility:visible;transition:transform .24s ease,visibility 0s}
 .d-head{padding:18px 18px 14px 20px;display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--line)}
@@ -134,6 +174,7 @@ footer{color:var(--muted);font-size:13px}
 .d-kind.k-floor{color:var(--floor);border-color:var(--floor);background:var(--floor-soft)}
 .d-kind.k-res{color:var(--main);border-color:var(--main);background:var(--main-soft)}
 .d-kind.k-log{color:var(--log);border-color:var(--log);background:var(--log-soft)}
+.d-kind.k-plan{color:var(--plan);border-color:var(--plan);background:var(--plan-soft)}
 .d-title{font-size:22px;font-weight:700;outline:none}
 .d-where{font-size:13px;color:var(--muted)}
 .icon-btn{flex:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-size:17px;display:grid;place-items:center}
@@ -149,50 +190,85 @@ footer{color:var(--muted);font-size:13px}
 .d-tips{margin:0;list-style:none;padding:14px 16px;border-radius:12px;background:var(--surface-2);display:flex;flex-direction:column;gap:8px;font-size:14px}
 .d-tips li{padding-left:18px;position:relative}
 .d-tips li::before{content:"!";position:absolute;left:0;top:.1em;font-weight:700;color:var(--warn)}
-.ui{display:inline-block;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:0 7px;font-size:13.5px;font-weight:600;line-height:1.75;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
+.ui{display:inline-block;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:0 7px;font-size:13.5px;font-weight:600;line-height:1.75;max-width:100%;vertical-align:bottom}
 .d-foot{border-top:1px solid var(--line);padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.nav-btn{border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:0;min-width:0;text-align:left}
+.nav-btn{border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;min-width:0;text-align:left}
 .nav-btn.next{text-align:right}
 .nav-btn small{font-size:12px;color:var(--muted)}
 .nav-btn span{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .nav-btn:hover:not(:disabled){border-color:var(--ink)}
 .nav-btn:disabled{opacity:.35;cursor:default}
 @media (max-width:760px){
-  .drawer{top:auto;left:calc(8px + env(safe-area-inset-left,0px));right:calc(8px + env(safe-area-inset-right,0px));bottom:calc(8px + env(safe-area-inset-bottom,0px));width:auto;max-height:82vh;max-height:82dvh;transform:translateY(calc(100% + 24px))}
+  .drawer{top:auto;left:calc(8px + env(safe-area-inset-left,0px));right:calc(8px + env(safe-area-inset-right,0px));bottom:calc(8px + env(safe-area-inset-bottom,0px));width:auto;max-height:84vh;max-height:84dvh;transform:translateY(calc(100% + 24px))}
 }
-@media (min-width:1100px){body.d-open .wrap{max-width:none;margin-left:0;margin-right:452px}}
+@media (min-width:1100px){body.d-open .wrap{max-width:none;margin-left:0;margin-right:472px}}
 @media (prefers-reduced-motion:reduce){.drawer,.scrim,.node .box,.node .tap{transition:none}}
+@media print{.drawer,.scrim,.theme-btn,.pill.hint{display:none}.board,.card,.mode{break-inside:avoid}}
 </style>
-
+</head>
+<body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">คู่มือการใช้งาน</div>
-    <h1>ORDER Workspace</h1>
-    <p>ระบบจัดการออเดอร์และสต็อก แผนผังนี้เรียงตามลำดับงานจริงในหนึ่งวัน อ่านจากซ้ายไปขวา ตามลูกศรสีเขียว</p>
+    <div class="eyebrow">คู่มือการใช้งาน · ฉบับปรับปรุง 20 ต.ค. 2026</div>
+    <h1>RAYQUAZA 2 โหมด</h1>
+    <p>โปรแกรมจัดการออเดอร์และสต็อก เชื่อมกับ BigSeller โดยตรง แผนผังด้านล่างเรียงตามลำดับงานจริงในหนึ่งวัน อ่านจากซ้ายไปขวาตามลูกศรสีเขียว หลายขั้นตอนโปรแกรมทำให้เองตามเวลาที่ตั้งไว้</p>
     <div class="meta-row">
       <span class="pill hint">👆 กดที่กล่องไหนก็ได้ เพื่อดูวิธีใช้</span>
-      <span class="pill">เว็บไซต์ <a href="https://bctgamer100-web.github.io/ORDOR/" target="_blank" rel="noopener">bctgamer100-web.github.io/ORDOR</a></span>
+      <span class="pill">โปรแกรม: ทางลัด <b>RAYQUAZA 2 โหมด</b> บนเดสก์ท็อป</span>
+      <button type="button" class="pill theme-btn" id="themeBtn" aria-label="สลับโหมดสีของคู่มือ">🌓 สลับสว่าง/มืด</button>
     </div>
   </header>
 
-  <section class="board" aria-label="แผนผังขั้นตอน">
+  <section class="modes" aria-label="สองโหมดของโปรแกรม">
+    <article class="mode">
+      <h2>🐉 โหมด RAYQUAZA</h2>
+      <p>หน้าตาธีมมังกร มีลูกเล่นและเอฟเฟกต์ แถบขวาชื่อ <b>RZ Plan</b></p>
+    </article>
+    <article class="mode">
+      <h2>📋 โหมดธรรมดา <span class="tag">ORDOR</span></h2>
+      <p>หน้าตาเรียบแบบเว็บ ORDOR เดิม แถบขวาชื่อ <b>Plan Order</b> ทุกฟีเจอร์ในคู่มือนี้ใช้ได้เหมือนกัน</p>
+    </article>
+  </section>
+  <p style="color:var(--muted);font-size:14px;margin-top:-14px">สลับโหมดที่สวิตช์ <b>[ RAYQUAZA | ธรรมดา ]</b> บนแถบบนของโปรแกรม ข้อมูลของสองโหมดแยกกัน แต่ใช้เบราว์เซอร์ในตัว การล็อกอิน BigSeller และรอบตั้งเวลาชุดเดียวกัน</p>
+
+  <section class="board" aria-label="แผนผังงานประจำวัน">
+    <div class="board-head">
+      <h2>งานประจำวัน (เมนูซ้าย)</h2>
+      <p>เมนูซ้ายมี 5 หน้า: นำเข้าข้อมูล · รับORDER · ก่อนสั่ง · ตรวจ ORDER กับ Stock · สรุปงาน (หน้า ตรวจใบปริ้น เอาออกแล้ว)</p>
+    </div>
     <div class="legend" aria-label="คำอธิบายสัญลักษณ์">
-      <span><i class="sw" style="border-color:var(--src);background:var(--src-soft)"></i>ข้อมูลที่ต้องเตรียม</span>
-      <span><i class="sw" style="border-color:var(--web);background:var(--web-soft)"></i>หน้าในเว็บ (เมนูซ้าย)</span>
+      <span><i class="sw" style="border-color:var(--src);background:var(--src-soft)"></i>ต้องเตรียม</span>
+      <span><i class="sw" style="border-color:var(--web);background:var(--web-soft)"></i>หน้าในโปรแกรม</span>
       <span><i class="sw" style="border-color:var(--floor);background:var(--floor-soft)"></i>งานนอกจอ</span>
       <span><i class="sw" style="border-color:var(--main);background:var(--main-soft)"></i>ผลลัพธ์</span>
       <span><i class="ln" style="border-color:var(--main)"></i>เส้นทางหลักทุกวัน</span>
-      <span><i class="ln dash" style="border-color:var(--src)"></i>ทำหรือข้ามก็ได้</span>
-      <span><i class="ln dash" style="border-color:var(--log)"></i>ระบบบันทึกให้เอง</span>
+      <span><i class="ln dash" style="border-color:var(--src)"></i>ข้อมูลที่ใช้</span>
+      <span><i class="ln dash" style="border-color:var(--log)"></i>ระบบทำให้เอง</span>
     </div>
-
     <div class="flow-svg" id="flow-svg"></div>
     <ol class="flow-list" id="flow-list"></ol>
   </section>
 
+  <section class="board" aria-label="แถบขวา RZ Plan">
+    <div class="board-head">
+      <h2>แถบขวา: RZ Plan / Plan Order</h2>
+      <p>หน้าวางแผนสั่งซื้อและดูแลร้าน ใช้ข้อมูลที่อัปโหลดในหน้า นำเข้าข้อมูล กดการ์ดเพื่อดูวิธีใช้</p>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
   <section class="cards">
     <article class="card">
-      <h2>ระบบตัดสินผลอย่างไร</h2>
+      <h2>⏰ โปรแกรมทำอะไรให้เอง</h2>
+      <ul>
+        <li class="time"><span class="when">ทุกเช้า</span>ขึ้นวันใหม่ ล้างแบรนด์ที่เลือก + 🏷️ Wave ของทุกรอบ และล้างตัวกรองตาราง ORDER (เวลาที่ตั้งไว้ไม่หาย)</li>
+        <li class="time"><span class="when">ตามรอบเวลา</span>โหลด ORDER จาก BigSeller แล้วปริ้นใบหยิบตามแบรนด์ของรอบนั้น ถ้าติ๊ก 🏷️ ไว้ จะสร้าง Wave + พิมพ์ใบปะหน้าต่อ</li>
+        <li class="time"><span class="when">ทุก 15 นาที</span>ดึงสินค้าที่ขายอยู่ Shopee · Lazada · TikTok (ไม่ต้องเปิดหน้านั้น)</li>
+        <li class="time"><span class="when">เปิดหน้า 1</span>ดึง ST และ SI จาก BigSeller ให้ (ถ้าติ๊กไว้)</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h2>ผลตรวจ ORDER กับ Stock</h2>
       <ul>
         <li class="row"><span class="st ok">✅ พอ</span>Stock มากกว่าหรือเท่ากับ ORDER</li>
         <li class="row"><span class="st warn">⚠️ ขาด X</span>Stock น้อยกว่า ORDER อยู่ X ชิ้น</li>
@@ -200,25 +276,35 @@ footer{color:var(--muted);font-size:13px}
       </ul>
     </article>
     <article class="card">
-      <h2>ทางลัดที่ควรรู้</h2>
+      <h2>⌨️ ทางลัดที่ควรรู้</h2>
       <ul>
-        <li class="dot">หน้า 4 กด <span class="ui">🔎 ส่งไปตรวจกับ Stock</span> ไม่ต้องพิมพ์ใหม่</li>
-        <li class="dot">หน้า 2 ตั้งเวลาให้โหลดและปริ้นเองได้</li>
-        <li class="dot">หน้า 5 วางข้อความ ORDER ได้ ระบบตรวจทันที</li>
+        <li class="dot"><kbd>Tab</kbd> เปิด/ปิดกล่อง ค้นหาสต็อก ได้ทุกหน้า</li>
+        <li class="dot"><kbd>Ctrl</kbd>+<kbd>B</kbd> หรือปุ่ม 🌐 เปิดเบราว์เซอร์ในตัว (BigSeller)</li>
+        <li class="dot">กดหัวตารางตัวอย่างข้อมูล ORDER เพื่อเรียง ▲/▼</li>
+        <li class="dot">กดรหัส Parent SKU ในหน้า สินค้าที่ขายอยู่ = คัดลอก</li>
       </ul>
     </article>
-    <article class="card">
-      <h2>Plan Order (แถบขวาของเว็บ)</h2>
-      <ul>
-        <li class="dot">ใบสั่งซื้อล่วงหน้า</li>
-        <li class="dot">สินค้าขายดี ABC</li>
-        <li class="dot">ประวัติเคลื่อนไหวสต๊อก</li>
-        <li class="dot">ตำแหน่งไม่เคลื่อนไหว</li>
-      </ul>
+
+    <article class="card wide">
+      <h2>🛠 แก้ปัญหาที่เจอบ่อย</h2>
+      <div class="faq">
+        <details><summary>ถึงเวลาแล้วไม่สร้าง Wave / ไม่พิมพ์ใบปะหน้า</summary>
+          <p>ดูปุ่มของรอบนั้นในหน้า รับORDER ต้องขึ้นว่า <b>🖨️ ปริ้น N ยี่ห้อ + 🏷️ Wave</b> ถ้าขึ้น <b>(ไม่ทำ Wave)</b> ให้กดปุ่มแล้วติ๊ก 🏷️ และต้องล็อกอิน BigSeller ในเบราว์เซอร์ในตัวไว้ด้วย</p></details>
+        <details><summary>ถึงเวลาแล้วไม่โหลดเลย</summary>
+          <p>รอบที่ยังไม่ได้เลือกแบรนด์จะไม่โหลด (ปุ่มขึ้นว่า 🖨️ เลือกแบรนด์) ทุกเช้าแบรนด์ถูกล้าง ต้องเลือกใหม่ และโปรแกรมต้องเปิดค้างไว้ตอนถึงเวลา</p></details>
+        <details><summary>ขึ้นว่า "ไม่พบส่วนขยาย"</summary>
+          <p>ปิดแล้วเปิดโปรแกรมใหม่ ถ้ายังขึ้นอยู่ ให้ติดตั้งโปรแกรมทับด้วยตัวติดตั้งล่าสุด (RAYQUAZA2-Setup.exe)</p></details>
+        <details><summary>ขึ้นว่า "ยังไม่ได้ล็อกอิน BigSeller"</summary>
+          <p>กด <kbd>Ctrl</kbd>+<kbd>B</kbd> เปิดเบราว์เซอร์ในตัว เข้า bigseller.com แล้วล็อกอิน (แยกจาก Chrome) จากนั้นกดคำสั่งเดิมอีกครั้ง</p></details>
+        <details><summary>BigSeller ตอบว่าเรียกถี่เกินไป (too frequent)</summary>
+          <p>โปรแกรมรอแล้วลองใหม่ให้เอง ถ้ายังไม่ได้ รอ 1–2 นาทีแล้วกดใหม่</p></details>
+        <details><summary>แก้สต็อก / ราคาพิเศษ แล้วขึ้น "ไม่พบสินค้านี้"</summary>
+          <p>สินค้าถูกลบหรือเลิกขายไปหลังดึงข้อมูลล่าสุด กด ⚡ ดึงจาก BigSeller ใหม่ก่อน</p></details>
+      </div>
     </article>
   </section>
 
-  <footer>จัดทำจากหน้าเว็บ ORDER Workspace เมื่อ 17 ต.ค. 2026 ถ้าชื่อปุ่มในเว็บเปลี่ยน คู่มือนี้ต้องปรับตาม</footer>
+  <footer>จัดทำตามโปรแกรม RAYQUAZA 2 โหมด รุ่น 20 ต.ค. 2026 ถ้าชื่อปุ่มในโปรแกรมเปลี่ยน คู่มือนี้ต้องปรับตาม</footer>
 </div>
 
 <div class="scrim" id="scrim"></div>
@@ -242,94 +328,126 @@ footer{color:var(--muted);font-size:13px}
 (function(){
   "use strict";
   function ui(t){return '<span class="ui">'+t+'</span>';}
-  var KIND={src:"ข้อมูลที่ต้องเตรียม",web:"หน้าในเว็บ",floor:"งานนอกจอ",res:"ผลลัพธ์",log:"หน้าในเว็บ"};
+  var KIND={src:"ต้องเตรียม",web:"หน้าในโปรแกรม",floor:"งานนอกจอ",res:"ผลลัพธ์",log:"หน้าในโปรแกรม",plan:"แถบขวา RZ Plan"};
 
-  /* Nodes in reading order. col/lane place them on the desktop chart. */
+  /* งานประจำวัน เรียงตามลำดับอ่าน · col/lane = ตำแหน่งในแผนผังจอกว้าง */
   var N=[
-    {id:"src_files",k:"src",col:0,lane:0,t:"ไฟล์ตั้งต้น",s:"3M · ST · SI · COM",phase:"เตรียมข้อมูล",
-     where:"เตรียมก่อนเข้าหน้า 1",
-     what:"ไฟล์ที่ระบบใช้เป็นฐานข้อมูล ควรอัปเดตทุกเช้าก่อนเริ่มงาน",
-     steps:["<b>3M</b>, <b>ST</b> (สต็อก), <b>SI</b> (ประวัติเคลื่อนไหวสต็อก) และ <b>COM</b> (สั่งเป้า) เป็นไฟล์ Excel หรือ CSV","ได้มาเป็นไฟล์ ZIP ก็ใช้ได้ ระบบแตกไฟล์และรวมให้เอง","ST กับ SI ไม่ต้องหาไฟล์ ระบบดึงจาก BigSeller ให้เมื่อเปิดหน้า นำเข้าข้อมูล"],
+    {id:"login",k:"src",col:1,lane:0,t:"ล็อกอิน BigSeller",s:"ในเบราว์เซอร์ในตัว",phase:"เตรียมก่อนเริ่ม",
+     where:"ทำครั้งแรก และเมื่อ BigSeller ให้ล็อกอินใหม่",
+     what:"ทุกอย่างที่ดึงจาก BigSeller (ORDER, ST/SI, Wave, สินค้าที่ขายอยู่) ใช้การล็อกอินในเบราว์เซอร์ในตัวของโปรแกรม",
+     steps:["กดปุ่ม 🌐 มุมขวาบน หรือ <kbd>Ctrl</kbd>+<kbd>B</kbd> เปิดเบราว์เซอร์ในตัว","เข้า bigseller.com แล้วล็อกอิน","เปิดค้างไว้หรือปิดแผงก็ได้ โปรแกรมจำการล็อกอินไว้"],
+     tips:["ล็อกอินใน Chrome ไม่นับ ต้องล็อกอินในโปรแกรม","โปรแกรมต้องเปิดค้างไว้ งานตั้งเวลาถึงจะทำงาน"]},
+    {id:"src_files",k:"src",col:0,lane:0,t:"ไฟล์ตั้งต้น",s:"3M · COM (ST/SI ดึงเอง)",phase:"เตรียมก่อนเริ่ม",
+     where:"ใช้ในหน้า 1 นำเข้าข้อมูล",
+     what:"ไฟล์ฐานข้อมูลของระบบ ควรอัปเดตทุกเช้าก่อนเริ่มงาน",
+     steps:["<b>3M</b> และ <b>COM</b> (สั่งเป้า) เป็นไฟล์ Excel / CSV เตรียมเอง","<b>ST</b> (สต็อก) และ <b>SI</b> (ประวัติเคลื่อนไหว) ไม่ต้องหาไฟล์ ระบบดึงจาก BigSeller ให้","ได้มาเป็น ZIP ก็ใช้ได้ ระบบแตกไฟล์และรวมให้เอง"],
      tips:["นำไฟล์ไปใช้ที่หน้า 1 นำเข้าข้อมูล"]},
-    {id:"imp",k:"web",n:"1",col:0,lane:1,t:"นำเข้าข้อมูล",s:"อัปเดตฐานข้อมูล",phase:"เตรียมข้อมูล",
+    {id:"imp",k:"web",n:"1",col:0,lane:1,t:"นำเข้าข้อมูล",s:"อัปเดตฐานข้อมูล",phase:"เตรียมก่อนเริ่ม",
      where:"เมนูซ้าย › นำเข้าข้อมูล",
-     what:"ทำให้ข้อมูลในระบบเป็นของวันนี้ หน้าอื่นทุกหน้าใช้ข้อมูลจากตรงนี้",
-     steps:["กดเมนู <b>นำเข้าข้อมูล</b> ระบบเริ่มดึง ST และ SI จาก BigSeller ให้ทันที","กดเลือกไฟล์แต่ละชนิดที่ต้องการอัปเดต","ดูตัวอย่างที่ขึ้นมาว่าเป็นไฟล์ถูกตัวและถูกวัน","กด "+ui("⬆️ อัปโหลดทั้งหมด")+" ระบบอัปโหลดให้ทีละชนิด"],
-     tips:["ไฟล์ใหม่จะ<b>เขียนทับ</b>ข้อมูลเดิมของชนิดนั้นทั้งหมด ตรวจตัวอย่างก่อนกดทุกครั้ง","ขึ้นข้อความ ยังไม่มีไฟล์ที่พร้อมอัปโหลด แปลว่ายังไม่ได้เลือกไฟล์"]},
-    {id:"src_order",k:"src",col:1,lane:0,t:"ออเดอร์ใหม่",s:"BigSeller หรือ Excel",phase:"รับออเดอร์",
-     where:"ใช้ในหน้า 2 รับORDER",
-     what:"รายการคำสั่งซื้อของลูกค้าที่ต้องแพ็กส่งรอบนี้",
-     steps:["ง่ายที่สุดคือกด "+ui("⚡ โหลดจาก BigSeller")+" ในหน้า รับORDER","หรือส่งออกไฟล์ออเดอร์เป็น Excel / CSV แล้วลากมาวางในหน้า รับORDER"],
-     tips:["ตั้งให้โหลดเองตามเวลาได้ ที่ ตั้งเวลาโหลดเอง แล้วกด + เพิ่มเวลา"]},
-    {id:"recv",k:"web",n:"2",col:1,lane:1,t:"รับORDER",s:"ทำใบหยิบ (Pivot)",phase:"รับออเดอร์",
+     what:"ทำให้ข้อมูลในระบบเป็นของวันนี้ หน้าอื่นทุกหน้าและแถบขวาใช้ข้อมูลจากตรงนี้",
+     steps:["ติ๊ก <b>ดึง ST และ SI จาก BigSeller อัตโนมัติเมื่อเปิดหน้านี้</b> ไว้ เปิดหน้าทีไรระบบดึงให้","เลือกไฟล์ 3M / COM ที่ต้องการอัปเดต","ดูตัวอย่างที่ขึ้นมาว่าไฟล์ถูกตัวและถูกวัน","กด "+ui("⬆️ อัปโหลดทั้งหมด")+" ระบบอัปโหลดให้ทีละชนิด"],
+     tips:["ไฟล์ใหม่<b>เขียนทับ</b>ข้อมูลเดิมของชนิดนั้นทั้งหมด ตรวจตัวอย่างก่อนกดทุกครั้ง","ขึ้นว่า ยังไม่มีไฟล์ที่พร้อมอัปโหลด แปลว่ายังไม่ได้เลือกไฟล์"]},
+    {id:"recv",k:"web",n:"2",col:1,lane:1,t:"รับORDER",s:"ตั้งเวลา · แบรนด์ · 🏷️",phase:"รับออเดอร์",
      where:"เมนูซ้าย › รับORDER",
-     what:"รวมออเดอร์เป็นใบหยิบสินค้า (Pivot) SKU เดียวกันจะรวมจำนวนเป็นบรรทัดเดียว",
-     steps:["เลือกช่วงออเดอร์ด้านบน: <b>ทั้งหมด (เมื่อวาน–วันนี้)</b> หรือ <b>ยังไม่พิมพ์ใบปะหน้า</b>","กด "+ui("⚡ โหลดจาก BigSeller")+" หรือคลิก/ลากไฟล์ ORDER มาวาง","ใช้กล่อง <b>กรองข้อมูลตามหัวข้อ</b> เลือกเฉพาะที่ต้องการ ใช้เหมือนตัวกรองใน Excel","เลือก <b>ยี่ห้อ</b> ที่จะปริ้น หรือกด เลือกทั้งหมด","ตรวจตาราง <b>PivotTable ก่อนปริ้น</b> และตัวเลข ORDER หลังกรอง · SKU ไม่ซ้ำ · จำนวนรวม","กด "+ui("🖨️ ปริ้น ORDER (Pivot)")+" หรือ "+ui("📊 ดาวน์โหลด Excel")],
-     tips:["ห้ามกด <b>ล้างข้อมูล</b> จนกว่าจะตรวจใบปริ้นเสร็จ เพราะหน้า 4 ต้องใช้ Pivot ชุดเดียวกับที่ปริ้นไป","อยากรู้เลข Tracking ให้คลิกชื่อในคอลัมน์ ชื่อ SKU Merchant","กรองผิด กด ↺ ล้างตัวกรอง แล้วเริ่มใหม่"]},
-    {id:"pre",k:"web",n:"3",col:2,lane:1,t:"ก่อนสั่ง",s:"คัดรายการจะสั่ง",phase:"รับออเดอร์",opt:true,
-     where:"เมนูซ้าย › ก่อนสั่ง (ทำหรือข้ามก็ได้)",
-     what:"เอา Pivot จากหน้า รับORDER มาเลือกว่าตัวไหนจะสั่ง โดยไม่ต้องดาวน์โหลดไฟล์",
-     steps:["ทำหน้า 2 ให้มี Pivot ก่อน ถ้ายังไม่มี หน้านี้จะว่าง","กดเมนู <b>ก่อนสั่ง</b> รายการจะขึ้นมาเอง","ติ๊กเลือกรายการ หรือใช้ "+ui("☑ เลือกทั้งหมด")+" / "+ui("☐ ยกเลิกทั้งหมด"),"ดูตัวเลข เลือกไว้ ให้ถูกต้อง แล้วกด "+ui("✅ ยืนยัน")],
-     tips:["ขั้นนี้ข้ามได้ ไม่กระทบการปริ้นใบหยิบ"]},
-    {id:"paper",k:"floor",col:1,lane:2,t:"ใบหยิบ Pivot",s:"ปริ้นจากหน้า 2",phase:"หยิบของ",
-     where:"กระดาษ",
-     what:"ใบหยิบสินค้าที่ปริ้นจากหน้า รับORDER หนึ่งบรรทัดคือหนึ่ง SKU พร้อมจำนวนรวม",
-     steps:["ปริ้นจากปุ่ม "+ui("🖨️ ปริ้น ORDER (Pivot)")+" ในหน้า 2","แจกให้คนหยิบสินค้า"],
-     tips:["เก็บใบไว้จนตรวจเสร็จ ต้องใช้ถ่ายรูปในขั้นต่อไป"]},
-    {id:"pick",k:"floor",col:3,lane:2,t:"หยิบของ + ขีด ✗",s:"แล้วถ่ายรูปใบ",phase:"หยิบของ",
+     what:"โหลดออเดอร์จาก BigSeller รวมเป็นใบหยิบ (Pivot) แล้วปริ้นให้เองตามรอบเวลา ตั้งครั้งเดียว ทุกวันแค่เลือกแบรนด์",
+     steps:["<b>ตั้งรอบเวลา</b>: กด "+ui("+ เพิ่มเวลา")+" ใส่เวลา แล้วเลือกแบบโหลด: <b>ทั้งหมด (เมื่อวาน–วันนี้)</b> · <b>ทั้งหมด (วันก่อน–วันนี้)</b> · <b>ยังไม่พิมพ์ใบปะหน้า</b>","<b>เลือกแบรนด์ของรอบนั้น</b>: กดปุ่ม "+ui("🖨️ เลือกแบรนด์")+" ติ๊กแบรนด์ที่จะปริ้น (WARRIX, GRAND, FLY HAWK, CADENZA, PEGAN, BCS, IMANE, H3, EGO) กดปุ่มเดิมอีกครั้งเพื่อพับเก็บ","<b>🏷️ Wave</b>: เลือกแบรนด์แล้วระบบติ๊ก 🏷️ ให้เลย = ปริ้นใบหยิบแล้วสร้าง Wave + พิมพ์ใบปะหน้าต่อ ไม่ต้องการก็เอาติ๊กออก","ดูปุ่มของแต่ละรอบ: "+ui("🖨️ ปริ้น 2 ยี่ห้อ + 🏷️ Wave")+" หรือ "+ui("🖨️ ปริ้น 2 ยี่ห้อ (ไม่ทำ Wave)"),"อยากโหลดตอนนี้เลย กด "+ui("⚡ โหลดจาก BigSeller")+" (ปุ่มนี้โหลดอย่างเดียว ไม่ปริ้นเอง) หรือลากไฟล์ ORDER มาวาง","ปริ้นเอง: กรองข้อมูลตามหัวข้อ เลือกยี่ห้อ แล้วกด "+ui("🖨️ ปริ้น ORDER (Pivot)"),"สร้าง Wave เองจากรายการที่เห็นอยู่ กด "+ui("🏷️ สร้าง Wave + พิมพ์ใบปะหน้า (รายการที่แสดงอยู่)")],
+     tips:["รอบที่<b>ไม่ได้เลือกแบรนด์</b> จะไม่โหลดอัตโนมัติ","ทุกเช้าแบรนด์และ 🏷️ ถูกล้าง ต้องเลือกแบรนด์ใหม่ทุกวัน (เวลาที่ตั้งไว้ไม่หาย)","ใต้รายการเวลาบอก ⏰ ครั้งถัดไป และ ✅ ผลรอบล่าสุด","กดหัวตาราง ตัวอย่างข้อมูล เพื่อเรียงข้อมูล","อยากรู้เลข Tracking ให้คลิกชื่อในคอลัมน์ ชื่อ SKU Merchant"]},
+    {id:"paper",k:"floor",col:1,lane:2,t:"ใบหยิบ + ใบปะหน้า",s:"ปริ้นออกมาให้เอง",phase:"หยิบของ",
+     where:"เครื่องพิมพ์",
+     what:"ถึงรอบเวลา ระบบปริ้นใบหยิบ (Pivot) ของแบรนด์ที่เลือก ถ้าติ๊ก 🏷️ จะสร้าง Wave ใน BigSeller ทีละไม่เกิน 100 พัสดุ แล้วพิมพ์ใบปะหน้าเรียงตามใบหยิบ",
+     steps:["ใบหยิบ: หนึ่งบรรทัดคือหนึ่ง SKU พร้อมจำนวนรวม ปริ้นเฉพาะรายการที่ยังไม่เคยปริ้น","ใบปะหน้า: พิมพ์ทีละ Wave ด้วยเครื่องพิมพ์ที่ตั้งไว้ใน BigSeller","ระบบเก็บ Tracking / SKU / จำนวน ไว้ในคลิปบอร์ดให้วางต่อได้"],
+     tips:["Wave ล้มเหลว แท็บ รายการ Wave จะเปิดค้างไว้ให้ดูในเบราว์เซอร์ในตัว","เลขที่ไม่อยู่ในรายการรอสร้าง Wave (ทำไปแล้ว / ยกเลิก) ระบบแจ้งในข้อความจบ"]},
+    {id:"pick",k:"floor",col:2,lane:2,t:"หยิบของ",s:"จดตัวที่หยิบไม่ได้",phase:"หยิบของ",
      where:"หน้างานในคลัง",
-     what:"คนหยิบเดินหยิบตามใบ แล้วทำเครื่องหมายด้วยปากกาบนใบเลย",
-     steps:["ตัวไหน<b>หยิบไม่ได้หรือไม่พอ</b> เขียน <b>✗</b> ต่อท้ายตัวเลขบรรทัดนั้น","ตัวที่อยากให้ตรวจซ้ำ วง <b>○</b>","หยิบครบแล้ว ถ่ายรูปใบให้เห็นครบทั้งแผ่น"],
-     tips:["ถ่ายตรงๆ ไม่เอียง แสงพอ ระบบจะอ่านได้แม่นขึ้น","มีหลายแผ่น ให้ชื่อไฟล์เรียงกัน ระบบเรียงตามชื่อไฟล์"]},
-    {id:"scan",k:"web",n:"4",col:3,lane:1,t:"ตรวจใบปริ้น",s:"หาบรรทัดที่มี ✗",phase:"หยิบของ",
-     where:"เมนูซ้าย › ตรวจใบปริ้น",
-     what:"อ่านรูปใบที่ขีดด้วยมือ แล้วหาบรรทัดที่มี ✗ ให้อัตโนมัติ",
-     steps:["กดเมนู <b>ตรวจใบปริ้น</b>","คลิกหรือลากรูป JPG / PNG / WEBP มาวาง เลือกได้หลายรูป","รูปเอียงให้กด ↺ หมุนซ้าย หรือ ↻ หมุนขวา","ดูผล: กรอบ<b>แดง</b> คือ ✗ กรอบ<b>น้ำเงิน</b> คือ ○ คลิกที่รูปเพื่อไปที่บรรทัดในตาราง","เลือก เฉพาะที่ควรตรวจ แล้วแก้บรรทัดที่ระบบไม่แน่ใจ","กด "+ui("🔎 ส่งไปตรวจกับ Stock")],
-     tips:["ขึ้นว่า ยังไม่มีรายการ Pivot ให้กลับไปเลือกไฟล์ที่หน้า รับORDER ก่อน","อยากเอารายการไปใช้ที่อื่น กด 📋 คัดลอกรายการ ✗"]},
-    {id:"src_stock",k:"src",col:4,lane:0,t:"ข้อมูล Stock",s:"ฐานข้อมูล หรือไฟล์",phase:"ตรวจและสรุป",
-     where:"ใช้ในหน้า 5",
+     what:"คนหยิบเดินหยิบตามใบหยิบ แล้วทำเครื่องหมายตัวที่หยิบไม่ได้หรือไม่พอ",
+     steps:["หยิบตามใบ แพ็กพร้อมใบปะหน้า","ตัวไหนหยิบไม่ได้หรือไม่พอ ขีด ✗ บนใบไว้","นำใบกลับมาที่หน้าจอ เพื่อติ๊กตัวที่ขาดในหน้า 3 ก่อนสั่ง"],
+     tips:["หน้า ตรวจใบปริ้น (อ่านรูปถ่าย) เอาออกแล้ว ให้ติ๊กในหน้า ก่อนสั่ง แทน"]},
+    {id:"pre",k:"web",n:"3",col:2,lane:1,t:"ก่อนสั่ง",s:"ติ๊กตัวที่ขาด",phase:"ตรวจและสรุป",
+     where:"เมนูซ้าย › ก่อนสั่ง",
+     what:"เอาใบหยิบ (Pivot) มาเลือกตัวที่ต้องตรวจหรือต้องสั่ง แล้วส่งไปตรวจกับ Stock ทันที ไม่ต้องดาวน์โหลดไฟล์",
+     steps:["กดเมนู <b>ก่อนสั่ง</b> รายการจากใบหยิบล่าสุดขึ้นมาเอง","หรือเลือกใบที่เคยปริ้นจาก <b>📂 ใบปริ้นที่เคยปริ้น</b> (เก็บล่าสุด 10 ใบ)","ติ๊กตัวที่หยิบไม่ได้ หรือใช้ "+ui("☑ เลือกทั้งหมด")+" / "+ui("☐ ยกเลิกทั้งหมด"),"กด "+ui("✅ ยืนยัน")+" ระบบพาไปหน้า ตรวจ ORDER กับ Stock และใส่เป็นไฟล์ที่ 1 ให้"],
+     tips:["ยังไม่มีใบหยิบ หน้านี้จะว่าง ให้โหลด ORDER ที่หน้า รับORDER ก่อน"]},
+    {id:"src_stock",k:"src",col:3,lane:0,t:"ข้อมูล Stock",s:"จากฐานข้อมูล",phase:"ตรวจและสรุป",
+     where:"ใช้ในหน้า 4",
      what:"จำนวนสินค้าที่มีจริงในคลัง ใช้เทียบกับออเดอร์",
-     steps:["ปกติกด "+ui("📥 ใช้ข้อมูลจากฐานข้อมูล (Plan Order)")+" ใช้ข้อมูลที่อัปโหลดในหน้า 1","หรือเลือกไฟล์ Stock (Excel / CSV) เองในช่อง ไฟล์ที่ 2"],
-     tips:["ข้อมูลในฐานข้อมูลใหม่แค่ไหน ขึ้นกับว่าอัปโหลดในหน้า 1 ล่าสุดเมื่อไร"]},
-    {id:"check",k:"web",n:"5",col:4,lane:1,t:"ตรวจกับ Stock",s:"เทียบทีละ SKU",phase:"ตรวจและสรุป",
+     steps:["กด "+ui("📥 ใช้ข้อมูลจากฐานข้อมูล (RZ Plan)")+" ใช้ข้อมูล ST ที่อัปโหลดในหน้า 1","หรือเลือกไฟล์ Stock (Excel / CSV) เองในช่อง ไฟล์ที่ 2"],
+     tips:["ข้อมูลใหม่แค่ไหน ขึ้นกับว่าอัปโหลดในหน้า 1 ล่าสุดเมื่อไร"]},
+    {id:"check",k:"web",n:"4",col:3,lane:1,t:"ตรวจกับ Stock",s:"เทียบทีละ SKU",phase:"ตรวจและสรุป",
      where:"เมนูซ้าย › ตรวจ ORDER กับ Stock",
-     what:"เทียบจำนวนที่ลูกค้าสั่งกับของในคลังทีละ SKU แล้วบอกว่าพอหรือขาดเท่าไร",
-     steps:["<b>ไฟล์ที่ 1 ORDER</b>: ส่งมาจากหน้า 4 จะมีให้แล้ว หรือเลือกไฟล์ หรือวางข้อความ","<b>ไฟล์ที่ 2 Stock</b>: กด ใช้ข้อมูลจากฐานข้อมูล หรือเลือกไฟล์","<b>ไฟล์ที่ 3 SI</b>: ไม่บังคับ มีให้เองถ้าอัปโหลดไว้แล้ว","รอจนขึ้น <b>✅ ตรวจสอบเสร็จแล้ว</b>","กด ⚠️ เฉพาะที่ขาด หรือ ❌ เฉพาะไม่มี Stock หรือพิมพ์ค้นหา SKU เพื่อดูเฉพาะที่สนใจ"],
-     tips:["SKU เดียวกันหลายแถว ระบบรวมจำนวนให้ทั้งฝั่ง ORDER และ Stock","ตำแหน่งแบบ KT-001-01 จะแสดงเป็น KT","จะตรวจชุดใหม่ กด 🗑 ล้างข้อมูล ก่อน"]},
-    {id:"result",k:"res",col:4,lane:2,t:"ผลตรวจ",s:"พอ · ขาด · ไม่มี",phase:"ตรวจและสรุป",
-     where:"แสดงในหน้า 5",
-     what:"ทุก SKU จะได้สถานะอย่างใดอย่างหนึ่ง",
-     steps:["<b>✅ พอ</b> Stock มากกว่าหรือเท่ากับ ORDER หยิบได้ครบ","<b>⚠️ ขาด X</b> Stock น้อยกว่า ORDER อยู่ X ชิ้น","<b>❌ ไม่มี Stock</b> ไม่พบ SKU ในคลัง หรือ Stock เป็น 0"],
-     tips:["ตัวเลขด้านบนของหน้า บอกจำนวน SKU ของแต่ละสถานะ"]},
-    {id:"export",k:"res",col:5,lane:2,t:"ส่งออกผล",s:"Excel · BigSeller",phase:"ตรวจและสรุป",
-     where:"ปุ่มในหน้า 5",
-     what:"เอาผลตรวจไปใช้ต่อ เลือกปุ่มตามงานที่จะทำ",
-     steps:[ui("⬇ ดาวน์โหลด Excel")+" เก็บผลทั้งหมดเป็นไฟล์",ui("📥 นำเข้า BigSeller")+" ไฟล์สำหรับนำกลับเข้า BigSeller",ui("📦 ไฟล์ย้ายสินค้าแยกตำแหน่ง")+" ใช้สั่งย้ายของระหว่างตำแหน่ง",ui("ลำดับเบิก")+" ดูลำดับการเบิกสินค้า"],
-     tips:["ดูผลบนเว็บได้เลยโดยไม่ต้องดาวน์โหลด ที่ตาราง ผลลัพธ์บนเว็บ"]},
-    {id:"log",k:"log",n:"6",col:5,lane:1,t:"สรุปงาน",s:"บันทึกให้อัตโนมัติ",phase:"ตรวจและสรุป",
+     what:"เทียบจำนวนที่ต้องใช้กับของในคลังทีละ SKU แล้วบอกว่าพอหรือขาดเท่าไร พร้อมตำแหน่งที่มีของ",
+     steps:["<b>ไฟล์ที่ 1 ORDER</b>: ส่งมาจากหน้า ก่อนสั่ง จะมีให้แล้ว หรือเลือกไฟล์ หรือวางข้อความ (SKU เว้นวรรค จำนวน)","<b>ไฟล์ที่ 2 Stock</b>: กด ใช้ข้อมูลจากฐานข้อมูล","<b>ไฟล์ที่ 3 SI</b>: ไม่บังคับ กด ใช้ข้อมูลจากฐานข้อมูล ได้เหมือนกัน","รอจนขึ้น <b>✅ ตรวจสอบเสร็จแล้ว</b>","กด ⚠️ เฉพาะที่ขาด / ❌ เฉพาะไม่มี Stock หรือพิมพ์ค้นหา SKU"],
+     tips:["SKU เดียวกันหลายแถว ระบบรวมจำนวนให้ทั้งฝั่ง ORDER และ Stock","ตำแหน่งแบบ KT-001-01 แสดงเป็น KT","จะตรวจชุดใหม่ กด 🗑 ล้างข้อมูล ก่อน"]},
+    {id:"result",k:"res",col:3,lane:2,t:"ผลตรวจ",s:"พอ · ขาด · ไม่มี",phase:"ตรวจและสรุป",
+     where:"แสดงในหน้า 4",
+     what:"ทุก SKU ได้สถานะอย่างใดอย่างหนึ่ง",
+     steps:["<b>✅ พอ</b> Stock มากกว่าหรือเท่ากับ ORDER","<b>⚠️ ขาด X</b> Stock น้อยกว่า ORDER อยู่ X ชิ้น","<b>❌ ไม่มี Stock</b> ไม่พบ SKU ในคลัง หรือ Stock เป็น 0"],
+     tips:["แถบตัวเลขด้านบนบอกจำนวน SKU ของแต่ละสถานะ"]},
+    {id:"export",k:"res",col:4,lane:2,t:"ใบย้าย / ส่งออก",s:"BigSeller · Excel",phase:"ตรวจและสรุป",
+     where:"ปุ่มในหน้า 4 (ส่วน ผลลัพธ์บนเว็บ)",
+     what:"เอาผลตรวจไปใช้ต่อ เช่น ย้ายของจากตำแหน่งเก็บมาหน้าร้าน",
+     steps:["ใส่ <b>ลำดับเบิก</b> เช่น KT, C เพื่อบอกว่าเบิกจากตำแหน่งไหนก่อน",ui("📦 ไฟล์ย้ายสินค้าแยกตำแหน่ง")+" ไฟล์ใบย้าย 1 ไฟล์ต่อ 1 ตำแหน่ง",ui("📥 นำเข้า BigSeller")+" ส่งใบย้ายชุดเดียวกันเข้า BigSeller ให้อัตโนมัติ",ui("⬇ ดาวน์โหลด Excel")+" เก็บผลทั้งหมดเป็นไฟล์"],
+     tips:["ดูผลบนหน้าจอได้เลยโดยไม่ต้องดาวน์โหลด"]},
+    {id:"log",k:"log",n:"5",col:4,lane:1,t:"สรุปงาน",s:"บันทึกให้อัตโนมัติ",phase:"ตรวจและสรุป",
      where:"เมนูซ้าย › สรุปงาน",
      what:"ประวัติว่าวันนี้ทำอะไรไปแล้วบ้าง ระบบบันทึกจากทุกหน้าให้เอง ไม่ต้องกดบันทึก",
-     steps:["กดเมนู <b>สรุปงาน</b>","เลือก 📅 วันนี้ / 🗂 ทั้งหมด / 📆 เลือกวันที่","ดูจำนวนกิจกรรม ไฟล์ที่ทำงาน และแท็บที่ใช้ ค้นหาด้วยช่อง ค้นหา ได้"],
-     tips:["ประวัติเก็บในเครื่องและเบราว์เซอร์นี้เท่านั้น เปิดจากเครื่องอื่นจะไม่เห็น","กด ล้าง จะลบประวัติทิ้ง"]}
+     steps:["กดเมนู <b>สรุปงาน</b>","เลือก 📅 วันนี้ / 🗂 ทั้งหมด / 📆 เลือกวันที่","ดูจำนวนกิจกรรม ไฟล์ที่ทำงาน และแท็บที่ใช้"],
+     tips:["ประวัติเก็บในเครื่องนี้เท่านั้น เครื่องอื่นจะไม่เห็น"]}
   ];
-  var BY={}; N.forEach(function(n,i){n.i=i;BY[n.id]=n;});
 
-  /* ---------- desktop SVG ---------- */
-  var W=1200,H=548,NW=160,NH=86,COLX=function(c){return 100+c*200;};
-  var LANES=[{y:8,h:168,label:"ข้อมูลที่ต้องเตรียม"},{y:192,h:168,label:"ทำบนเว็บ"},{y:376,h:168,label:"หน้างาน / ผลลัพธ์"}];
+  /* ลำดับอ่าน (ปุ่ม ก่อนหน้า/ถัดไป และรายการบนมือถือ) */
+  var READ=["src_files","imp","login","recv","paper","pick","pre","src_stock","check","result","export","log"];
+  N.sort(function(a,b){return READ.indexOf(a.id)-READ.indexOf(b.id);});
+  N.forEach(function(n){if(n.id==="login")n.phase="รับออเดอร์";});
+
+  /* แถบขวา RZ Plan / Plan Order */
+  var P=[
+    {id:"p_purchase",k:"plan",ic:"🛒",t:"ใบสั่งซื้อล่วงหน้า",s:"คำนวณจำนวนที่ควรสั่ง",
+     where:"แถบขวา › ใบสั่งซื้อล่วงหน้า",
+     what:"รายการสินค้าที่ควรสั่งเพิ่ม คิดจากยอดขาย สต็อก และเป้าที่อัปโหลดในหน้า นำเข้าข้อมูล",
+     steps:["กดการ์ดในแถบขวา ข้อมูลโหลดเอง","ค้นหา SKU ได้หลายตัวพร้อมกัน (คั่นด้วย , หรือกดปุ่มรายการเพื่อวางทีละบรรทัด)","ปุ่มมุมขวา: ดาวน์โหลด Excel · ไฟล์สั่งเป้า · ตารางสี/ไซซ์ · นำเข้าตารางสี/ไซซ์ · พิมพ์"],
+     tips:["ตัวเลขใหม่แค่ไหน ขึ้นกับการอัปโหลดในหน้า นำเข้าข้อมูล"]},
+    {id:"p_best",k:"plan",ic:"📈",t:"สินค้าขายดี ABC",s:"จัดกลุ่มตามยอดขาย",
+     where:"แถบขวา › สินค้าขายดี ABC",
+     what:"แบ่งสินค้าเป็นกลุ่ม A / B / C ตามยอดขาย ใช้ดูว่าตัวไหนควรมีของตลอด",
+     steps:["กดการ์ดในแถบขวา","ค้นหา SKU หรือดาวน์โหลด Excel ได้จากปุ่มมุมขวา"],
+     tips:[]},
+    {id:"p_stockin",k:"plan",ic:"📦",t:"ประวัติเคลื่อนไหวสต๊อก",s:"เข้า-ออกของแต่ละ SKU",
+     where:"แถบขวา › ประวัติเคลื่อนไหวสต๊อก",
+     what:"ดูการรับเข้าและจ่ายออกของสินค้า จากไฟล์ SI",
+     steps:["กดการ์ดในแถบขวา","ค้นหา SKU เพื่อดูประวัติของตัวนั้น"],
+     tips:["ข้อมูลมาจาก SI ที่ดึงในหน้า นำเข้าข้อมูล"]},
+    {id:"p_idle",k:"plan",ic:"🗄️",t:"ตำแหน่งไม่เคลื่อนไหว",s:"ของค้างนานในตำแหน่ง",
+     where:"แถบขวา › ตำแหน่งไม่เคลื่อนไหว",
+     what:"ตำแหน่งเก็บของที่ไม่มีการเคลื่อนไหวนาน ใช้วางแผนย้ายหรือระบายของ",
+     steps:["กดการ์ดในแถบขวา","ดาวน์โหลด Excel หรือพิมพ์ได้จากปุ่มมุมขวา"],
+     tips:[]},
+    {id:"p_listing",k:"plan",ic:"🛍️",t:"สินค้าที่ขายอยู่",s:"ดูแลร้าน Shopee · Lazada · TikTok",isNew:true,
+     where:"แถบขวา › สินค้าที่ขายอยู่",
+     what:"รวมสินค้าที่ขายอยู่ทุกร้านจาก BigSeller ไว้ที่เดียว ดูว่าราคาพิเศษครบไหม SKU ไหนสต็อกหมด เทียบราคากับเว็บแบรนด์ และแก้สต็อก / ราคาพิเศษ เข้า BigSeller ได้เลย",
+     steps:["กด "+ui("⚡ ดึงจาก BigSeller")+" ครั้งแรก (ประมาณ 1 นาที) หลังจากนั้นระบบดึงให้เองทุก 15 นาที","มุมมอง <b>รวมต่อ SKU</b> (1 แถวต่อรหัส ใต้รหัสบอกจำนวนร้าน) หรือ <b>แยกรายร้าน</b>","เลือกร้าน / ทั้งแพลตฟอร์ม และตัวกรอง: <b>ราคาพิเศษยังไม่ครบ</b> · <b>มี SKU สต็อก 0</b> · คุณภาพต้องปรับปรุง · แนะนำให้เพิ่มวิดีโอ","ช่อง <b>ราคาพิเศษ</b>: ครบ = ทุก SKU อยู่ในโปรที่กำลังใช้ · เหลือ N = ยังไม่ได้ใส่ N SKU","กดปุ่มในช่อง <b>ตัวเลือก</b> เพื่อดูทุก SKU แล้วกด "+ui("✏️ แก้สต็อกทุกร้าน")+" หรือ "+ui("🏷️ ราคาพิเศษทุกร้าน")+" ติ๊กร้านที่จะส่ง แล้วกดบันทึก","ช่อง <b>ราคาตั้งต้นเว็บแบรนด์</b> หาให้เองจากเว็บ WARRIX · GRAND SPORT · FLY HAWK · BCS หรือกด "+ui("🔎 หาราคาเว็บแบรนด์"),"แบรนด์ที่ไม่มีเว็บ (เช่น PEGAN, CADENZA) กด "+ui("📥 ใบราคาแบรนด์")+" นำเข้า Excel ใบราคา ระบบจับคู่รหัสให้"],
+     tips:["แก้สต็อก / ราคาพิเศษ มีผลกับร้านทันที ระบบถามยืนยันก่อนทุกครั้ง แล้วอ่านค่ากลับมาเช็กให้","แก้ได้เฉพาะร้าน Shopee (Lazada / TikTok ดูได้อย่างเดียว)","ตั้งราคาพิเศษได้ ร้านต้องมีโปรโมชันส่วนลดใน BigSeller ก่อน","ดูย้อนหลังว่าแก้อะไรไป กด 🕘 ประวัติการแก้"]}
+  ];
+
+  var ALL=N.concat(P);
+  var BY={}; ALL.forEach(function(n,i){n.i=i;BY[n.id]=n;});
+
+  /* ---------- แผนผังจอกว้าง ---------- */
+  var W=1200,H=548,NW=156,NH=86,COLX=function(c){return 140+c*230;};
+  var LANES=[{y:8,h:168,label:"ต้องเตรียม"},{y:192,h:168,label:"ทำในโปรแกรม"},{y:376,h:168,label:"หน้างาน / ผลลัพธ์"}];
   function CY(l){return LANES[l].y+LANES[l].h/2+10;}
   var EDGES=[
-    {f:"src_files",t:"imp",c:"data"},{f:"src_order",t:"recv",c:"data",l:"โหลด"},{f:"src_stock",t:"check",c:"data",l:"Stock"},
-    {f:"imp",t:"recv",c:"main"},{f:"recv",t:"pre",c:"opt"},
-    {f:"recv",t:"paper",c:"main",l:"ปริ้น"},{f:"paper",t:"pick",c:"main",l:"แจกคนหยิบของ"},
-    {f:"pick",t:"scan",c:"main",l:"อัปโหลดรูป"},{f:"scan",t:"check",c:"main"},
-    {f:"check",t:"result",c:"main",l:"ผล"},{f:"result",t:"export",c:"main"},{f:"check",t:"log",c:"auto"}
+    {f:"src_files",t:"imp",c:"data"},{f:"login",t:"recv",c:"data",l:"⚡ โหลด ORDER"},
+    {f:"imp",t:"recv",c:"main"},
+    {f:"recv",t:"paper",c:"main",l:"ปริ้นตามเวลา"},{f:"paper",t:"pick",c:"main",l:"แจก"},
+    {f:"pick",t:"pre",c:"main",l:"ตัวที่ขาด"},{f:"pre",t:"check",c:"main",l:"ยืนยัน"},
+    {f:"src_stock",t:"check",c:"data"},
+    {f:"check",t:"result",c:"main"},{f:"result",t:"export",c:"main"},{f:"check",t:"log",c:"auto"}
   ];
   var NS="http://www.w3.org/2000/svg";
   function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
 
-  var svg=el("svg",{viewBox:"0 0 "+W+" "+H,role:"group","aria-label":"แผนผังขั้นตอนการทำงาน"});
+  var svg=el("svg",{viewBox:"0 0 "+W+" "+H,role:"group","aria-label":"แผนผังงานประจำวัน"});
   var defs=el("defs",{},svg);
   ["main","data","auto"].forEach(function(c){
     var m=el("marker",{id:"ah-"+c,viewBox:"0 0 10 10",refX:"8.5",refY:"5",markerWidth:"11",markerHeight:"11",markerUnits:"userSpaceOnUse",orient:"auto-start-reverse"},defs);
@@ -343,7 +461,10 @@ footer{color:var(--muted);font-size:13px}
   EDGES.forEach(function(e){
     var a=BY[e.f],b=BY[e.t],ax=COLX(a.col),ay=CY(a.lane),bx=COLX(b.col),by=CY(b.lane),d,mx,my;
     if(a.lane===b.lane){var dir=bx>ax?1:-1;var x1=ax+dir*NW/2,x2=bx-dir*(NW/2+2);d="M"+x1+","+ay+" L"+x2+","+by;mx=(x1+x2)/2;my=ay;}
-    else{var dv=by>ay?1:-1;var y1=ay+dv*NH/2,y2=by-dv*(NH/2+2);d="M"+ax+","+y1+" L"+bx+","+y2;mx=ax;my=(y1+y2)/2;}
+    else if(a.col===b.col){var dv=by>ay?1:-1;var y1=ay+dv*NH/2,y2=by-dv*(NH/2+2);d="M"+ax+","+y1+" L"+bx+","+y2;mx=ax;my=(y1+y2)/2;}
+    else{ /* ต่างคอลัมน์และต่างแถว: ลงจากขอบล่าง/บน แล้วเลี้ยวเข้าข้าง */
+      var dv2=by>ay?1:-1,dh=bx>ax?1:-1,y0=ay+dv2*NH/2,xe=bx-dh*(NW/2+2);
+      d="M"+ax+","+y0+" L"+ax+","+by+" L"+xe+","+by;mx=ax;my=(y0+by)/2;}
     var mk=e.c==="opt"?"data":e.c;
     el("path",{d:d,"class":"edge "+e.c,"marker-end":"url(#ah-"+mk+")"},gE);
     if(e.l){
@@ -358,30 +479,39 @@ footer{color:var(--muted);font-size:13px}
     var g=el("g",{"class":"node k-"+n.k,tabindex:"0",role:"button","data-id":n.id,"aria-label":(n.n?"ขั้น "+n.n+" ":"")+n.t+" — "+n.s+" กดเพื่อดูวิธีใช้"},gN);
     el("rect",{x:x-5,y:y-5,width:NW+10,height:NH+10,rx:16,"class":"ring"},g);
     el("rect",{x:x,y:y,width:NW,height:NH,rx:12,"class":"box"},g);
-    var tx=cx, ty=cy-4;
+    var ty=cy-4;
     if(n.n){
       el("circle",{cx:x+20,cy:y+20,r:12,"class":"badge-c"},g);
       var bt=el("text",{x:x+20,y:y+24.5,"text-anchor":"middle","class":"badge-t"},g);bt.textContent=n.n;
       ty=cy+2;
     }
-    var t=el("text",{x:tx,y:ty,"text-anchor":"middle","class":"t"},g);t.textContent=n.t;
-    var s=el("text",{x:tx,y:ty+20,"text-anchor":"middle","class":"s"},g);s.textContent=n.s;
+    var t=el("text",{x:cx,y:ty,"text-anchor":"middle","class":"t"},g);t.textContent=n.t;
+    var s=el("text",{x:cx,y:ty+20,"text-anchor":"middle","class":"s"},g);s.textContent=n.s;
     var tp=el("text",{x:x+NW-10,y:y+18,"text-anchor":"end","class":"tap"},g);tp.textContent="ดูวิธีใช้ ›";
   });
   document.getElementById("flow-svg").appendChild(svg);
 
-  /* ---------- phone list ---------- */
+  /* ---------- รายการขั้นตอนบนมือถือ ---------- */
   var list=document.getElementById("flow-list"),lastPhase="";
-  N.forEach(function(n,i){
+  N.forEach(function(n){
     var li=document.createElement("li"),h="";
     if(n.phase!==lastPhase){h+='<div class="phase">'+esc(n.phase)+'</div>';lastPhase=n.phase;}
     else h+='<div class="conn" aria-hidden="true"></div>';
     var ic=n.n?n.n:(n.k==="src"?"📄":n.k==="floor"?"✋":"✓");
-    h+='<button type="button" class="step-btn k-'+n.k+'" data-id="'+n.id+'"><span class="ic" aria-hidden="true">'+ic+'</span><span><b>'+esc(n.t)+(n.opt?' <small style="display:inline">(ข้ามได้)</small>':'')+'</b><small>'+esc(n.s)+'</small></span><span class="go" aria-hidden="true">›</span></button>';
+    h+='<button type="button" class="step-btn k-'+n.k+'" data-id="'+n.id+'"><span class="ic" aria-hidden="true">'+ic+'</span><span><b>'+esc(n.t)+'</b><small>'+esc(n.s)+'</small></span><span class="go" aria-hidden="true">›</span></button>';
     li.innerHTML=h;list.appendChild(li);
   });
 
-  /* ---------- drawer ---------- */
+  /* ---------- การ์ดแถบขวา ---------- */
+  var tiles=document.getElementById("tiles");
+  P.forEach(function(p){
+    var b=document.createElement("button");
+    b.type="button";b.className="tile"+(p.isNew?" new":"");b.setAttribute("data-id",p.id);
+    b.innerHTML='<span class="ti" aria-hidden="true">'+p.ic+'</span><b>'+esc(p.t)+'</b><small>'+esc(p.s)+'</small>';
+    tiles.appendChild(b);
+  });
+
+  /* ---------- แผงวิธีใช้ ---------- */
   var drawer=document.getElementById("drawer"),scrim=document.getElementById("scrim"),
       dKind=document.getElementById("d-kind"),dTitle=document.getElementById("d-title"),dWhere=document.getElementById("d-where"),
       dBody=document.getElementById("d-body"),prev=document.getElementById("d-prev"),next=document.getElementById("d-next"),
@@ -405,14 +535,13 @@ footer{color:var(--muted);font-size:13px}
     h+='</ol></div>';
     if(n.tips&&n.tips.length){h+='<div class="d-sec"><h3>ข้อควรรู้</h3><ul class="d-tips">';n.tips.forEach(function(s){h+='<li>'+s+'</li>';});h+='</ul></div>';}
     dBody.innerHTML=h; dBody.scrollTop=0;
-    var p=N[n.i-1],q=N[n.i+1];
+    var p=ALL[n.i-1],q=ALL[n.i+1];
     prev.disabled=!p; prevT.textContent=p?label(p):"—";
     next.disabled=!q; nextT.textContent=q?label(q):"—";
     drawer.classList.add("open"); drawer.setAttribute("aria-hidden","false");
     if(mqPhone.matches) scrim.classList.add("on");
     document.body.classList.add("d-open");
     setActive(id);
-    if(!mqPhone.matches){var g=document.querySelector('.node[data-id="'+id+'"]');if(g&&g.scrollIntoView){try{g.scrollIntoView({block:"nearest",inline:"nearest"});}catch(e){}}}
     try{dTitle.focus({preventScroll:true});}catch(e){dTitle.focus();}
   }
   function close(){
@@ -434,11 +563,21 @@ footer{color:var(--muted);font-size:13px}
   });
   document.getElementById("d-close").addEventListener("click",close);
   scrim.addEventListener("click",close);
-  prev.addEventListener("click",function(){var n=BY[cur];if(n&&N[n.i-1])open(N[n.i-1].id);});
-  next.addEventListener("click",function(){var n=BY[cur];if(n&&N[n.i+1])open(N[n.i+1].id);});
+  prev.addEventListener("click",function(){var n=BY[cur];if(n&&ALL[n.i-1])open(ALL[n.i-1].id);});
+  next.addEventListener("click",function(){var n=BY[cur];if(n&&ALL[n.i+1])open(ALL[n.i+1].id);});
   function syncScrim(){if(drawer.classList.contains("open")&&mqPhone.matches)scrim.classList.add("on");else scrim.classList.remove("on");}
   if(mqPhone.addEventListener) mqPhone.addEventListener("change",syncScrim); else if(mqPhone.addListener) mqPhone.addListener(syncScrim);
+
+  /* ---------- สลับสว่าง/มืด (จำไว้ในเบราว์เซอร์นี้) ---------- */
+  var root=document.documentElement;
+  try{var saved=localStorage.getItem("rz_manual_theme");if(saved==="light"||saved==="dark")root.setAttribute("data-theme",saved);}catch(e){}
+  document.getElementById("themeBtn").addEventListener("click",function(){
+    var dark=root.getAttribute("data-theme")?root.getAttribute("data-theme")==="dark":window.matchMedia("(prefers-color-scheme:dark)").matches;
+    var nextT=dark?"light":"dark";
+    root.setAttribute("data-theme",nextT);
+    try{localStorage.setItem("rz_manual_theme",nextT);}catch(e){}
+  });
 })();
 </script>
-
-</body></html>
+</body>
+</html>
