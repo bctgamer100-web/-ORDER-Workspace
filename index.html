@@ -227,7 +227,13 @@ footer{color:var(--muted);font-size:13px}
 }
 @media (min-width:1100px){body.d-open .wrap{max-width:none;margin-left:0;margin-right:532px}}
 @media (prefers-reduced-motion:reduce){.drawer,.scrim,.node .box,.node .tap{transition:none}}
-@media print{.drawer,.scrim,.theme-btn,.pill.hint{display:none}.board,.card,.mode{break-inside:avoid}}
+.dl{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--main-soft);border:1px solid var(--main);border-radius:14px;padding:16px 18px;margin:0 0 22px}
+.dl-text{flex:1;min-width:220px;display:flex;flex-direction:column;gap:4px}
+.dl-text h2{margin:0;font-size:18px}
+.dl-text p{margin:0;font-size:13.5px;color:var(--muted)}
+.dl-btn{border:0;border-radius:10px;padding:12px 20px;font:inherit;font-size:15px;font-weight:700;background:var(--main);color:#fff;cursor:pointer;white-space:nowrap}
+.dl-btn:disabled{opacity:.6;cursor:wait}
+@media print{.drawer,.scrim,.theme-btn,.pill.hint,.dl{display:none}.board,.card,.mode{break-inside:avoid}}
 </style>
 </head>
 <body>
@@ -242,6 +248,15 @@ footer{color:var(--muted);font-size:13px}
       <button type="button" class="pill theme-btn" id="themeBtn" aria-label="สลับโหมดสีของคู่มือ">🌓 สลับสว่าง/มืด</button>
     </div>
   </header>
+
+  <section class="dl" aria-label="ดาวน์โหลดโปรแกรม">
+    <div class="dl-text">
+      <h2>⬇ ดาวน์โหลดโปรแกรม RAYQUAZA 2 โหมด</h2>
+      <p id="dlInfo">กำลังเช็กรุ่นล่าสุด...</p>
+      <p>สำหรับ Windows 10/11 · ดาวน์โหลดแล้วดับเบิลคลิก <b>RAYQUAZA2-Setup.exe</b> เพื่อติดตั้ง (ถ้า Windows เตือน กด ข้อมูลเพิ่มเติม › เรียกใช้ต่อไป) · ติดตั้งแล้วรุ่นต่อไปอัปเดตเองในโปรแกรม</p>
+    </div>
+    <button type="button" class="dl-btn" id="dlBtn" disabled>⬇ ดาวน์โหลด</button>
+  </section>
 
   <section class="modes" aria-label="สองโหมดของโปรแกรม">
     <article class="mode">
@@ -305,7 +320,7 @@ footer{color:var(--muted);font-size:13px}
     <article class="card">
       <h2>⌨️ ทางลัดที่ควรรู้</h2>
       <ul>
-        <li class="dot"><kbd>Tab</kbd> เปิด/ปิดกล่อง ค้นหาสต็อก ได้ทุกหน้า (รวมหน้า BigSeller) · กดตำแหน่งเพื่อเลือกเบิก แล้วกด ⬇ โหลดใบย้าย · SKU ที่เบิกไปแล้ววันนี้แถวเปลี่ยนสี (เหลือง 1 ครั้ง · ส้ม 2 · แดง 3+) และตำแหน่งที่เบิกไปแล้วมีป้าย <b>เบิก n</b> ต่อท้าย</li>
+        <li class="dot"><kbd>Tab</kbd> เปิด/ปิดกล่อง ค้นหาสต็อก ได้ทุกหน้า (รวมหน้า BigSeller) · กดตำแหน่งเพื่อเลือกเบิก แล้วกด ⬇ โหลดใบย้าย หรือ 📥 นำเข้า BigSeller (ส่งเข้าหน้า ย้ายสินค้า ให้เอง ถามยืนยันก่อน) · SKU ที่เบิกไปแล้ววันนี้แถวเปลี่ยนสี (เหลือง 1 ครั้ง · ส้ม 2 · แดง 3+) และตำแหน่งที่เบิกไปแล้วมีป้าย <b>เบิก n</b> ต่อท้าย</li>
         <li class="dot"><kbd>Ctrl</kbd>+<kbd>B</kbd> หรือปุ่ม 🌐 เปิดเบราว์เซอร์ในตัว (BigSeller)</li>
         <li class="dot">กดหัวตารางตัวอย่างข้อมูล ORDER เพื่อเรียง ▲/▼</li>
         <li class="dot">กดรหัส Parent SKU ในหน้า สินค้าที่ขายอยู่ = คัดลอก</li>
@@ -354,6 +369,32 @@ footer{color:var(--muted);font-size:13px}
 </aside>
 
 <script>
+/* ปุ่มดาวน์โหลด: อ่านรุ่นล่าสุดจากช่องอัปเดตของโปรแกรม (Supabase op-share/app-update/RAYQUAZA2/latest.json — ที่เดียวกับที่ build.ps1 -Dual -Publish อัปโหลด)
+   แล้วขอลิงก์ดาวน์โหลดชั่วคราว (10 นาที) ทุกครั้งที่กด จึงได้ตัวติดตั้งรุ่นใหม่สุดเสมอ ไม่ต้องแก้หน้านี้ · ใช้ publishable key ชุดเดียวกับ js/rz-config.js */
+(function(){
+  "use strict";
+  var SB="https://yvfqxlgkwaylivopctno.supabase.co", KEY="sb_publishable_xNq2vHHwVe8v_rujH3P_QQ_ep6-g6ol";
+  var H={apikey:KEY,Authorization:"Bearer "+KEY};
+  var info=document.getElementById("dlInfo"), btn=document.getElementById("dlBtn"), latest=null;
+  function pretty(v){var p=String(v).split(".");return p.length<4?v:p[2]+"/"+p[1]+"/"+p[0]+" "+p[3].replace(/^(\d{1,2})(\d\d)$/,"$1:$2");}
+  fetch(SB+"/storage/v1/object/op-share/app-update/RAYQUAZA2/latest.json?t="+Date.now(),{headers:H,cache:"no-store"})
+    .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+    .then(function(j){
+      latest=j;
+      info.innerHTML="รุ่นล่าสุด <b>"+pretty(j.version)+"</b> · "+(j.size/1048576).toFixed(1)+" MB"+(j.notes?" · ใหม่: "+String(j.notes).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}):"");
+      btn.disabled=false;
+    })
+    .catch(function(){info.textContent="เช็กรุ่นล่าสุดไม่ได้ (ต้องต่ออินเทอร์เน็ต) ลองรีเฟรชหน้านี้";});
+  btn.addEventListener("click",function(){
+    if(!latest)return;
+    btn.disabled=true;btn.textContent="⏳ กำลังเตรียม...";
+    fetch(SB+"/storage/v1/object/sign/"+encodeURI("op-share/"+latest.path),{method:"POST",headers:Object.assign({"Content-Type":"application/json"},H),body:JSON.stringify({expiresIn:600})})
+      .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+      .then(function(s){location.href=SB+"/storage/v1"+s.signedURL+"&download=RAYQUAZA2-Setup.exe";})
+      .catch(function(e){alert("ดาวน์โหลดไม่สำเร็จ ("+e.message+") ลองใหม่อีกครั้ง");})
+      .then(function(){setTimeout(function(){btn.disabled=false;btn.textContent="⬇ ดาวน์โหลด";},1500);});
+  });
+})();
 (function(){
   "use strict";
   function ui(t){return '<span class="ui">'+t+'</span>';}
